@@ -1,16 +1,27 @@
 class Api::AuthenticationController < ApplicationController
-    skip_before_action :authenticate_user
-    
-    def create
-        @user = User.find_by(username: params[:username])
-        if  @user&.authenticate(params[:password])
-            token = JwtToken.encode(user_id: @user.id)
-            time = Time.now + 24.hours.to_i
-            render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
-                            username: @user.username}, status: :ok
+    before_action :authenticate_user, except: :login
 
-        else
-            render json: { error: 'Usuario y/o contraseña inválidos'}, status: :unauthorized
-        end
+    # POST /api/login
+    def login
+      @user = User.find_by_username(params[:username])
+      if @user&.authenticate(params[:password])
+        token = JwtToken.encode(user_id: @user.id)
+        time = Time.now + 24.hours.to_i
+        render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
+                       username: @user.username }, status: :ok
+      else
+        render json: { error: 'unauthorized' }, status: :unauthorized
+      end
     end
+
+    # GET /api/logout 
+    def logout 
+        localStorage.removeItem("jwt")
+    end
+  
+    private
+  
+        def login_params
+            params.permit(:username, :password)
+        end
 end
