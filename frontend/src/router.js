@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Componentes
+// Components
 import IndexNotes from "./components/IndexNotes.vue";
 import ArchivedNotes from "./components/ArchivedNotes.vue";
 import LoginComponent from "./components/LoginComponent.vue";
 
-// definir objeto rutas
+// routes object
 const routes = [
   {
     path: "/",
@@ -22,7 +22,7 @@ const routes = [
 
 ];
 
-// crear objeto rutas
+// router object
 const router = createRouter({
   history: createWebHistory(),
   routes,

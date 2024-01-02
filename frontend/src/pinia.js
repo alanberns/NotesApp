@@ -8,7 +8,7 @@ pinia.use((context) => {
     deSerealize: JSON.parse,
   };
 
-  //trae cambios desde el local storage
+  // changes from local storage
   const fromStorage = serializer.deSerealize(
     window.localStorage.getItem(storeId)
   );
@@ -16,7 +16,7 @@ pinia.use((context) => {
   if (fromStorage) {
     context.store.$patch(fromStorage);
   }
-  //Escucha los cambios en el store y los actualiza
+  // update changes
   context.store.$subscribe((mutation, state) => {
     window.localStorage.setItem(storeId, serializer.serialize(state));
   });
