@@ -20,6 +20,7 @@
     </div>
 </template>
 <script>
+import { axiosService } from "../axios";
 import NoteBox from './NoteBox.vue'
 export default {
     components: {
@@ -33,7 +34,11 @@ export default {
     },
     // Fetches posts when the component is created.
     mounted() {
-        this.axios.get('/notes')
+        axiosService.get("/notes", {
+            headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+            },
+        })
         .then(response => {
             // JSON responses are automatically parsed.
             this.data = response.data;

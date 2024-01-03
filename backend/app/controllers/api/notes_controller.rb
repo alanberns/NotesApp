@@ -3,7 +3,7 @@ class Api::NotesController < ApplicationController
 
   # GET /notes
   def index
-    @notes = Note.all
+    @notes = Note.where(user_id: @current_user.id)
     # params: isactive, categories.
 
     render json: @notes
