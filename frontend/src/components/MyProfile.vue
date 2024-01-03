@@ -1,0 +1,39 @@
+<template>
+    <h3> My profile</h3>
+    <div class="">
+        <div>
+            {{ data }}
+        </div>
+        <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
+            <router-link to="/"><button type="button" class="btn btn-warning">Edit</button></router-link>
+            <router-link to="/"><button type="button" class="btn btn-danger">Delete</button></router-link>
+        </div>
+    </div>
+</template>
+<script>
+import { axiosService } from "../axios";
+export default {
+    name: "MyProfile",
+    data() {
+        return {
+            data: [],
+            errors: []
+        }
+    },
+    // Fetches posts when the component is created.
+    mounted() {
+        axiosService.get("/user/", {
+            headers: {
+                Authorization: `${localStorage.getItem("token")}`,
+            },
+        })
+        .then(response => {
+            // JSON responses are automatically parsed.
+            this.data = response.data;
+        })
+        .catch(e => {
+            this.errors.push(e)
+        })
+    }
+}
+</script>

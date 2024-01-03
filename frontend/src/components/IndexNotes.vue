@@ -4,7 +4,7 @@
         <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
             <router-link to="/archived"><button type="button" class="btn btn-warning">Archived notes</button></router-link>
         </div>
-        <div v-if="data" class="row justify-content-start p-2">
+        <div v-if="data" class="row justify-content-start p-2 m-0">
             <NoteBox
                 v-for="note in data"
                 v-bind:note="note"

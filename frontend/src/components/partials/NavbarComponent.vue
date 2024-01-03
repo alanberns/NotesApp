@@ -16,7 +16,7 @@
               {{ loginStore.user }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Mi perfil</a></li>
+              <li><a class="dropdown-item" href="/me">Mi perfil</a></li>
               <li><hr class="dropdown-divider"></li>
               <li>      
                 <a

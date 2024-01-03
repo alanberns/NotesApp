@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import IndexNotes from "./components/IndexNotes.vue";
 import ArchivedNotes from "./components/ArchivedNotes.vue";
 import LoginComponent from "./components/LoginComponent.vue";
+import MyProfile from './components/MyProfile.vue';
 
 // routes object
 const routes = [
@@ -19,6 +20,10 @@ const routes = [
     path: "/login",
     component: LoginComponent,
   },
+  {
+    path: "/me",
+    component: MyProfile,
+  }
 
 ];
 

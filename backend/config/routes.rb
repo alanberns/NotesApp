@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: "json" } do
     resources :notes
     #get "notes/archived" => "notes#list_archived_notes"
-    resources :user
+    get "/user" => "users#show"
+    put "/user" => "users#update"
+    delete "/user" => "users#destroy"
+    post "/user" => "users#create"
     post "login" => "authentication#login"
   end
   
