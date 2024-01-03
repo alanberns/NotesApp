@@ -2,7 +2,6 @@
     <h3> My notes</h3>
     <div class="">
         <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
-            <button type="button" class="btn btn-warning"> Create note</button>
             <router-link to="/archived"><button type="button" class="btn btn-warning">Archived notes</button></router-link>
         </div>
         <div v-if="data" class="row justify-content-start p-2">
@@ -36,7 +35,7 @@ export default {
     mounted() {
         axiosService.get("/notes", {
             headers: {
-            Authorization: `${localStorage.getItem("token")}`,
+                Authorization: `${localStorage.getItem("token")}`,
             },
         })
         .then(response => {

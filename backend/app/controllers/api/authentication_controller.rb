@@ -13,11 +13,6 @@ class Api::AuthenticationController < ApplicationController
         render json: { error: 'unauthorized' }, status: :unauthorized
       end
     end
-
-    # GET /api/logout 
-    def logout 
-        localStorage.removeItem("jwt")
-    end
   
     private
   
