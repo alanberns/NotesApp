@@ -1,8 +1,15 @@
 <template>
     <h3> My profile</h3>
-    <div class="">
-        <div>
-            {{ data }}
+    <div class="row d-flex justify-content-center">
+        <div class="col-8 p-2">
+            <table class="table table-bordered table-hover">
+                <tbody>
+                    <tr>
+                    <th scope="row">Username</th>
+                        <td>{{data.username}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
             <router-link to="/"><button type="button" class="btn btn-warning">Edit</button></router-link>
