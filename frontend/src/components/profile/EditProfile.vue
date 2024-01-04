@@ -18,11 +18,14 @@
 <script>
 import { axiosService } from "../../axios";
 import {useLoginStore} from '../../stores/loginStore'
+import {useAlertStore} from '../../stores/alertStore'
+import router from "../../router";
 export default {
     name: "EditProfile",
     setup() {
         const loginStore = useLoginStore();
-        return { loginStore };
+        const alertStore = useAlertStore();
+        return { loginStore, alertStore };
     },
     data() {
         return {
@@ -58,6 +61,8 @@ export default {
                     // JSON responses are automatically parsed.
                     this.data = response.data;
                     this.loginStore.user=this.data.username
+                    this.alertStore.setInfo("Cambios guardados");
+                    router.push("/me");
                 })
                 .catch(e => {
                     this.errors.push(e)
