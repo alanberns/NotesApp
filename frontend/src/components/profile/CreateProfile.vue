@@ -37,8 +37,10 @@ export default {
         createProfile: async function(){
             await axiosService.post("/user/create",
                 {   
-                    username: this.data.username,
-                    password: this.data.password,
+                    user: {
+                        username: this.data.username,
+                        password: this.data.password,
+                    }
                 })
             .then(response => {
                 this.data = response.data

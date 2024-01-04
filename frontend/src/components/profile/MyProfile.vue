@@ -19,9 +19,14 @@
 </template>
 <script>
 import { axiosService } from "../../axios";
+import {useAlertStore} from '../../stores/alertStore'
 import router from "../../router";
 export default {
     name: "MyProfile",
+    setup() {
+        const alertStore = useAlertStore();
+        return { alertStore };
+    },
     data() {
         return {
             data: [],
@@ -51,15 +56,12 @@ export default {
                     },
                 })
                 .then(response => {
-                    // JSON responses are automatically parsed.
                     this.data = response.data;
-                    this.loginStore.setTokenExpired(null);
-                    this.loginStore.logOut();
                     this.alertStore.setInfo("La cuenta ha sido eliminada");
                     router.push("/");
                 })
                 .catch(e => {
-                    console.log(e);
+                    this.alertStore.setError(e);
                 })
             }
         }

@@ -3,10 +3,7 @@ class Api::UsersController < ApplicationController
 
   # POST /user/
   def create
-    @user = User.new()
-    params.permit(:username, :password)
-    @user.username = params[:username]
-    @user.password = params[:password]
+    @user = User.new(user_params)
 
     if @user.save
       render json: @user.to_json( :only => [:username] ), status: :created

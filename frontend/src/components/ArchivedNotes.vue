@@ -37,7 +37,7 @@ export default {
             this.data = response.data;
         })
         .catch(e => {
-            this.errors.push(e)//this.alertStore.setError(e);
+            console.log(e)//this.alertStore.setError(e);
         })
     }
 }
