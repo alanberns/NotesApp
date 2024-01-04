@@ -1,7 +1,6 @@
 <template>
     <h3>Login</h3>
     <br>
-    <span>{{ error_msg }}</span>
     <div class="row d-flex justify-content-center">
       <div class="col-8">
         <form @submit.prevent="login">
@@ -15,24 +14,26 @@
           </div>
           <button type="submit" name="action" class="btn btn-warning">Iniciar Sesión</button>
         </form>
+        <router-link to="/register"><button type="button" class="btn btn-link">Create profile</button></router-link>
       </div>
     </div>
 </template>
 <script>
 import {useLoginStore} from '../stores/loginStore'
+import {useAlertStore} from '../stores/alertStore'
 import router from "../router";
 import { axiosService } from "../axios";
 export default {  
   name: 'LoginComponent',
   setup() {
       const loginStore = useLoginStore();
-  return { loginStore };
+      const alertStore = useAlertStore();
+  return { loginStore, alertStore };
   },
   data() {
     return {
       username: "",
       password: "",
-      error_msg: "",
     };
   },
   methods: {
@@ -50,9 +51,10 @@ export default {
         .then((response) => {
             localStorage.setItem("token", response.data.token);
             this.loginStore.signIn(response.data.token,response.data.username);
+            this.alertStore.setInfo("Bienvenido "+response.data.username)
             router.push("/");
         })
-        .catch((error) => (this.error_msg=error));
+        .catch((e) => this.alertStore.setError(e));
     },
   },
 };

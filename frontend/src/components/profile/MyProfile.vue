@@ -25,7 +25,6 @@ export default {
     data() {
         return {
             data: [],
-            errors: []
         }
     },
     // Fetches posts when the component is created.
@@ -40,7 +39,7 @@ export default {
             this.data = response.data;
         })
         .catch(e => {
-            this.errors.push(e)
+            this.alertStore.setError(e);
         })
     },
     methods: {
@@ -54,10 +53,13 @@ export default {
                 .then(response => {
                     // JSON responses are automatically parsed.
                     this.data = response.data;
+                    this.loginStore.setTokenExpired(null);
+                    this.loginStore.logOut();
+                    this.alertStore.setInfo("La cuenta ha sido eliminada");
                     router.push("/");
                 })
                 .catch(e => {
-                    this.errors.push(e)
+                    console.log(e);
                 })
             }
         }

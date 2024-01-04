@@ -35,17 +35,20 @@
 
 <script>
 import { useLoginStore } from "../../stores/loginStore";
+import {useAlertStore} from '../../stores/alertStore'
 
 export default {
   name: "NavbarComponent",
   setup() {
     const loginStore = useLoginStore();
-    return { loginStore };
+    const alertStore = useAlertStore();
+  return { loginStore, alertStore };
   },
   methods: {
     signOut() {
       this.loginStore.setTokenExpired(null);
       this.loginStore.logOut();
+      this.alertStore.setInfo("Sesión cerrada")
     },
   },
 };

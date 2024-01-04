@@ -45,7 +45,7 @@ export default {
             this.data = response.data;
         })
         .catch(e => {
-            this.errors.push(e)
+            this.alertStore.setError(e);
         })
     },
     methods: {
@@ -65,7 +65,7 @@ export default {
                     router.push("/me");
                 })
                 .catch(e => {
-                    this.errors.push(e)
+                    this.alertStore.setError(e);
                 })
             }
         }

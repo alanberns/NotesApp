@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     delete "/user" => "users#destroy"
     post "/user" => "users#create"
     post "login" => "authentication#login"
+    post "/user/create" => "users#create"
   end
   
   get "up" => "rails/health#show", as: :rails_health_check

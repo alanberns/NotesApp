@@ -43,7 +43,7 @@ export default {
             this.data = response.data;
         })
         .catch(e => {
-            this.errors.push(e)
+            this.errors.push(e)//this.alertStore.setError(e);
         })
     }
 }

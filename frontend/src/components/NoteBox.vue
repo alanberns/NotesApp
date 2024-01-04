@@ -54,10 +54,10 @@ export default {
     async changeState() {
       this.axios.post('/changeState',this.note)          
         .then(() => {
-          this.$router.push("/");
+          this.$router.push("/");//this.alertStore.setInfo(e);
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error);//this.alertStore.setError(e);
         });
     },
   },

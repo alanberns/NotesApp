@@ -6,6 +6,7 @@ import ArchivedNotes from "./components/ArchivedNotes.vue";
 import LoginComponent from "./components/LoginComponent.vue";
 import MyProfile from './components/profile/MyProfile.vue';
 import EditProfile from './components/profile/EditProfile.vue';
+import CreateProfile from './components/profile/CreateProfile.vue';
 
 // routes object
 const routes = [
@@ -28,6 +29,10 @@ const routes = [
   {
     path: "/me/edit",
     component: EditProfile,
+  },
+  {
+    path: "/register",
+    component: CreateProfile,
   }
 
 ];

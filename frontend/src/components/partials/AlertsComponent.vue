@@ -3,11 +3,11 @@
         <div class="p-1 col-9">
             <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="alertStore.info">
                 {{alertStore.info}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="closeAlert"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="closeInfo"></button>
             </div>
             <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="alertStore.error">
                 {{alertStore.error}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="closeAlert"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="closeError"></button>
             </div>
         </div>
     </div>
@@ -23,8 +23,10 @@ export default {
       return { alertStore };
     },
     methods: {
-        closeAlert: function(){
+        closeError: function(){
             this.alertStore.error="";
+        },
+        closeInfo: function(){
             this.alertStore.info="";
         }
     }

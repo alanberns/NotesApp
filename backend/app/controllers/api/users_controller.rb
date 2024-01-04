@@ -3,6 +3,16 @@ class Api::UsersController < ApplicationController
 
   # POST /user/
   def create
+    @user = User.new()
+    params.permit(:username, :password)
+    @user.username = params[:username]
+    @user.password = params[:password]
+
+    if @user.save
+      render json: @user.to_json( :only => [:username] ), status: :created
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /user/
@@ -27,6 +37,6 @@ class Api::UsersController < ApplicationController
   private
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:username, :password_digest)
+      params.require(:user).permit(:username, :password)
     end
 end
