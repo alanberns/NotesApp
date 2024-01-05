@@ -7,7 +7,7 @@
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">New note</a>
+            <a class="nav-link" href="/new">New note</a>
           </li>
         </ul>
           <div class="dropdown-center" v-if="loginStore.isAuthenticated">

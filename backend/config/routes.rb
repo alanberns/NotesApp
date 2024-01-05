@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     post "/user" => "users#create"
     post "login" => "authentication#login"
     post "/user/create" => "users#create"
+    patch "/notes/:id/toggle" => "notes#toggle"
   end
   
   get "up" => "rails/health#show", as: :rails_health_check

@@ -21,7 +21,6 @@
 <script>
 import {useLoginStore} from '../stores/loginStore'
 import {useAlertStore} from '../stores/alertStore'
-import router from "../router";
 import { axiosService } from "../axios";
 export default {  
   name: 'LoginComponent',
@@ -52,7 +51,7 @@ export default {
             localStorage.setItem("token", response.data.token);
             this.loginStore.signIn(response.data.token,response.data.username);
             this.alertStore.setInfo("Bienvenido "+response.data.username)
-            router.push("/");
+            this.$router.push("/");
         })
         .catch((e) => this.alertStore.setError(e));
     },

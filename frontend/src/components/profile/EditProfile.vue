@@ -19,7 +19,6 @@
 import { axiosService } from "../../axios";
 import {useLoginStore} from '../../stores/loginStore'
 import {useAlertStore} from '../../stores/alertStore'
-import router from "../../router";
 export default {
     name: "EditProfile",
     setup() {
@@ -62,7 +61,7 @@ export default {
                     this.data = response.data;
                     this.loginStore.user=this.data.username
                     this.alertStore.setInfo("Cambios guardados");
-                    router.push("/me");
+                    this.$router.push("/me");
                 })
                 .catch(e => {
                     this.alertStore.setError(e);

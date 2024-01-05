@@ -1,5 +1,5 @@
 class Note < ApplicationRecord
-    before_validation :set_default_values
+    before_validation :set_default_values, on: :create
 
     belongs_to :user
     has_many :categories, dependent: :delete_all

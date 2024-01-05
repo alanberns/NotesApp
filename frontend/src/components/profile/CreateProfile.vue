@@ -20,7 +20,6 @@
 import { axiosService } from "../../axios";
 import {useLoginStore} from '../../stores/loginStore'
 import {useAlertStore} from '../../stores/alertStore'
-import router from "../../router";
 export default {
     name: "CreateProfile",
     setup() {
@@ -45,7 +44,7 @@ export default {
             .then(response => {
                 this.data = response.data
                 this.alertStore.setInfo("Bienvenido a Notes app, inicie sesión");
-                router.push("/");
+                this.$router.push("/");
                 })
                 .catch(e => {
                     this.alertStore.setError(e);

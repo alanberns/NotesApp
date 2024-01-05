@@ -21,13 +21,13 @@
             </svg>  
           </button>
 
-          <button v-if="!isActive" type="button" @onclick=changeState() class="btn">
+          <button v-if="note.isActive" type="button" @click="changeState" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-title="Archivar">
               <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
             </svg>
           </button>
-          <button v-else type="button" onclick=changeState() class="btn">
+          <button v-else type="button" @click="changeState" class="btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-capslock-fill" viewBox="0 0 16 16" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-title="Activar">
               <path d="M7.27 1.047a1 1 0 0 1 1.46 0l6.345 6.77c.6.638.146 1.683-.73 1.683H11.5v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1H1.654C.78 9.5.326 8.455.924 7.816L7.27 1.047zM4.5 13.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1z"/>
@@ -40,8 +40,14 @@
 </template>
 <script>
 import { Tooltip } from 'bootstrap'
+import { axiosService } from "../axios";
+import {useAlertStore} from '../stores/alertStore'
 export default {  
   name: 'NoteBox',
+  setup() {
+    const alertStore = useAlertStore();
+    return { alertStore };
+  },
   props: {
     note: Object
   },
@@ -52,13 +58,21 @@ export default {
   },
   methods: {
     async changeState() {
-      this.axios.post('/changeState',this.note)          
-        .then(() => {
-          this.$router.push("/");//this.alertStore.setInfo(e);
-        })
-        .catch((error) => {
-          console.log(error);//this.alertStore.setError(e);
-        });
+      await axiosService.patch("/notes/"+this.note.id+"/toggle",{
+        note: this.note
+      },
+      {   
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then(() => {
+        this.alertStore.setInfo("Note was updated");
+        this.$router.push("/")
+      })
+      .catch((e) => {
+        this.alertStore.setError(e);
+      });
     },
   },
 };

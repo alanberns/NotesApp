@@ -20,7 +20,6 @@
 <script>
 import { axiosService } from "../../axios";
 import {useAlertStore} from '../../stores/alertStore'
-import router from "../../router";
 export default {
     name: "MyProfile",
     setup() {
@@ -58,7 +57,7 @@ export default {
                 .then(response => {
                     this.data = response.data;
                     this.alertStore.setInfo("La cuenta ha sido eliminada");
-                    router.push("/");
+                    this.$router.push("/");
                 })
                 .catch(e => {
                     this.alertStore.setError(e);

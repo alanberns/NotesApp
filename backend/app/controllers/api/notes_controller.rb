@@ -1,5 +1,5 @@
 class Api::NotesController < ApplicationController
-  before_action :set_note, only: %i[ show update destroy ]
+  before_action :set_note, only: %i[ show update destroy toggle ]
 
   # GET /notes
   def index
@@ -17,9 +17,20 @@ class Api::NotesController < ApplicationController
   # POST /notes
   def create
     @note = Note.new(note_params)
+    @note.user_id = @current_user.id
 
     if @note.save
-      render json: @note, status: :created, location: @note
+      render json: @note, status: :created
+    else
+      render json: @note.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH /notes/1/toggle
+  def toggle
+    @note.toggle(:isActive)
+    if @note.save
+      render json: @note
     else
       render json: @note.errors, status: :unprocessable_entity
     end

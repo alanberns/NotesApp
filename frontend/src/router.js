@@ -7,6 +7,7 @@ import LoginComponent from "./components/LoginComponent.vue";
 import MyProfile from './components/profile/MyProfile.vue';
 import EditProfile from './components/profile/EditProfile.vue';
 import CreateProfile from './components/profile/CreateProfile.vue';
+import NewNote from './components/notes/NewNote'
 
 // routes object
 const routes = [
@@ -33,7 +34,11 @@ const routes = [
   {
     path: "/register",
     component: CreateProfile,
-  }
+  },
+  {
+    path: "/new",
+    component: NewNote,
+  },
 
 ];
 
