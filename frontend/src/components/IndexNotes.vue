@@ -20,15 +20,20 @@
 </template>
 <script>
 import { axiosService } from "../axios";
+import {useAlertStore} from '../stores/alertStore'
 import NoteBox from './NoteBox.vue'
 export default {
+    name: "IndexNotes",
+    setup() {
+        const alertStore = useAlertStore();
+        return { alertStore };
+    },
     components: {
         NoteBox,
     },
     data() {
         return {
-            data: [],
-            errors: []
+            data: []
         }
     },
     // Fetches posts when the component is created.
@@ -43,8 +48,9 @@ export default {
             this.data = response.data;
         })
         .catch(e => {
-            this.errors.push(e)//this.alertStore.setError(e);
+            this.alertStore.setError(e);
         })
-    }
+    },
+
 }
 </script>
