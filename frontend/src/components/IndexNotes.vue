@@ -6,16 +6,15 @@
         </div>
         <div v-if="data" class="row justify-content-start p-2 m-0">
             <NoteBox
-                v-for="note in data"
+                v-for="(note, index) in data"
                 v-bind:note="note"
                 v-bind:key="note.id"
+                @refresh="updateNotes(index)"
             ></NoteBox>
         </div>
         <div v-else >
             Aún no hay notas
         </div>
-
-        
     </div>
 </template>
 <script>
@@ -36,7 +35,6 @@ export default {
             data: []
         }
     },
-    // Fetches posts when the component is created.
     mounted() {
         axiosService.get("/notes", {
             headers: {
@@ -44,13 +42,16 @@ export default {
             },
         })
         .then(response => {
-            // JSON responses are automatically parsed.
             this.data = response.data;
         })
         .catch(e => {
             this.alertStore.setError(e);
         })
     },
-
+    methods: {
+        updateNotes: function (index) {
+            this.data.splice(index,1)
+        }   
+    },
 }
 </script>

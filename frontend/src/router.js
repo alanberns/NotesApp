@@ -8,6 +8,7 @@ import MyProfile from './components/profile/MyProfile.vue';
 import EditProfile from './components/profile/EditProfile.vue';
 import CreateProfile from './components/profile/CreateProfile.vue';
 import NewNote from './components/notes/NewNote'
+import ShowNote from './components/notes/ShowNote'
 
 // routes object
 const routes = [
@@ -39,6 +40,10 @@ const routes = [
     path: "/new",
     component: NewNote,
   },
+  {
+    path: "/show/:id",
+    component: ShowNote,
+  }
 
 ];
 

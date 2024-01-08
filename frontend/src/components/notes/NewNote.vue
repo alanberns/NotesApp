@@ -11,6 +11,9 @@
                     <label for="content" class="form-label">Content</label>
                     <textarea class="form-control" id="content" rows="3" v-model="note.content"></textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="categories" class="form-label">Categories</label>
+                </div>
                 <button type="submit" name="action" class="btn btn-warning">Create</button>
             </form>
             <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">

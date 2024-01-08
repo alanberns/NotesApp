@@ -32,7 +32,6 @@ export default {
             errors: []
         }
     },
-    // Fetches posts when the component is created.
     mounted() {
         axiosService.get("/user/", {
             headers: {
@@ -40,7 +39,6 @@ export default {
             },
         })
         .then(response => {
-            // JSON responses are automatically parsed.
             this.data = response.data;
         })
         .catch(e => {
@@ -57,7 +55,6 @@ export default {
                     },
                 })
             .then(response => {
-                    // JSON responses are automatically parsed.
                     this.data = response.data;
                     this.loginStore.user=this.data.username
                     this.alertStore.setInfo("Cambios guardados");
