@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post "login" => "authentication#login"
     post "/user/create" => "users#create"
     patch "/notes/:id/toggle" => "notes#toggle"
+    get "/categories" => "categories#index"
   end
   
   get "up" => "rails/health#show", as: :rails_health_check

@@ -11,15 +11,24 @@ class Api::NotesController < ApplicationController
 
   # GET /notes/1
   def show
-    render json: @note
+    @categories_all = Category.all.as_json(:except => [:created_at, :updated_at])
+    @categories_assigned= @note.categories.as_json(:except => [:created_at, :updated_at])
+    @categories = @categories_all - @categories_assigned
+    data= {
+      note: @note,
+      note_categories: @categories_assigned,
+      categories: @categories
+    }
+    render json: data
   end
 
   # POST /notes
   def create
-    @note = Note.new(note_params)
-    @note.user_id = @current_user.id
-
+    @note = Note.new(user_id:@current_user.id, title:params[:note][:title], content:params[:note][:content])
+    categories = params[:categories].map { |c| Category.find(c[:id])}
+    
     if @note.save
+      categories.each { |c| @note.categories << c}
       render json: @note, status: :created
     else
       render json: @note.errors, status: :unprocessable_entity
@@ -38,8 +47,21 @@ class Api::NotesController < ApplicationController
 
   # PATCH/PUT /notes/1
   def update
-    if @note.update(note_params)
-      render json: @note
+    categories = params[:categories].map { |c| Category.find(c[:id])} if params[:categories]
+    note_categories = @note.categories
+    categories.each { |c| @note.categories << c unless note_categories.exists?(c.id) }
+    @note.categories.each { |c| @note.categories.delete(c) unless categories.include?(c) }
+
+    if @note.update(title:params[:note][:title],content:params[:note][:content])
+      @categories_all = Category.all.as_json(:except => [:created_at, :updated_at])
+      @categories_assigned= @note.categories.as_json(:except => [:created_at, :updated_at])
+      @categories = @categories_all - @categories_assigned
+      data= {
+        note: @note,
+        note_categories: @categories_assigned,
+        categories: @categories
+      }
+      render json: data
     else
       render json: @note.errors, status: :unprocessable_entity
     end
@@ -58,6 +80,6 @@ class Api::NotesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def note_params
-      params.require(:note).permit(:title, :content, :isActive)
+      params.require(:note).permit(:title, :content, :isActive, {categories=> [:id, :name]})
     end
 end

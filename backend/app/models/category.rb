@@ -1,6 +1,5 @@
 class Category < ApplicationRecord    
-    belongs_to :notes
-
+    has_and_belongs_to_many :notes
     validates :name, presence: true
 
 end

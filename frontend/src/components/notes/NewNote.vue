@@ -12,8 +12,27 @@
                     <textarea class="form-control" id="content" rows="3" v-model="note.content"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="categories" class="form-label">Categories</label>
+                    Categories
+                    <div>
+                        <span class="badge rounded-pill text-bg-light" v-for="category in note_categories" v-bind:key="category.id">
+                            {{ category.name }}
+                            <button class="btn btn-light btn-sm" type="button" @click="removeCategory(category)">x</button>
+                        </span>
+                        
+                    </div>
                 </div>
+                <div class="row d-flex justify-content-center p-2" v-if="categories.length > 0">
+                    <div class="dropdown-center col-5">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Add category
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li v-for="category in categories" v-bind:key="category.id" @click="addCategory(category)">
+                                <a class="dropdown-item" href="#">{{ category.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
                 <button type="submit" name="action" class="btn btn-warning">Create</button>
             </form>
             <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
@@ -33,33 +52,55 @@ export default {
     },
     data() {
         return {
-            data:[],
+            categories: [],
             note: {
                 title:"",
-                content:""
+                content:"",
             },
+            note_categories: []
         }
+    },
+    mounted(){
+        axiosService.get("/categories", {
+            headers: {
+                Authorization: `${localStorage.getItem("token")}`,
+            },
+            })
+            .then(response => {
+                this.categories = response.data
+            })
+            .catch(e => {
+                this.alertStore.setError(e);
+            })
     },
     methods: {
         createNote: async function(){
             await axiosService.post("/notes",
                 {   
-                    note: this.note
+                    note: this.note,
+                    categories: this.note_categories
                 },
                 {   
                 headers: {
                     Authorization: `${localStorage.getItem("token")}`,
                 },
                 })
-            .then(response => {
-                this.data = response.data
+            .then(() => {
                 this.alertStore.setInfo("Note created");
                 this.$router.push("/");
                 })
                 .catch(e => {
                     this.alertStore.setError(e);
                 })
-            }
-        }
+        },
+        addCategory: function(cat){
+            this.categories.splice(this.categories.indexOf(cat),1)
+            this.note_categories.push(cat)
+        },
+        removeCategory: function(cat){
+            this.note_categories.splice(this.note_categories.indexOf(cat),1)
+            this.categories.push(cat)
+        },
+    }
 }
 </script>

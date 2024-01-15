@@ -7,6 +7,13 @@
             <div class="mb-3 text-start">
                 {{ note.content }}
             </div>
+            Categories
+            <div>
+                <span class="badge rounded-pill text-bg-light" v-for="category in note_categories" v-bind:key="category.id">
+                    {{ category.name }}
+                </span>
+                
+            </div>
           </div>
           <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
               <router-link to="/"><button type="button" class="btn btn-warning">Back</button></router-link>
@@ -33,6 +40,28 @@
                     <textarea class="form-control" id="message-text" v-model="note.content"></textarea>
                   </div>
                 </form>
+                <div class="mb-3">
+                    Categories
+                    <div>
+                        <span class="badge rounded-pill text-bg-light" v-for="category in note_categories" v-bind:key="category.id">
+                            {{ category.name }}
+                            <button class="btn btn-light btn-sm" type="button" @click="removeCategory(category)">x</button>
+                        </span>
+                        
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center p-2" v-if="categories.length > 0">
+                    <div class="dropdown-center col-5">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Add category
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li v-for="category in categories" v-bind:key="category.id" @click="addCategory(category)">
+                                <a class="dropdown-item" href="#">{{ category.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -58,37 +87,55 @@ export default {
   data(){
     return{
         note: Object,
+        categories: [],
+        note_categories: []
     }
   },
   mounted(){
-      axiosService.get("/notes/"+this.$route.params.id, {
+    this.fetchNotes()
+  },
+  methods:{
+    fetchNotes: async function(){
+      await axiosService.get("/notes/"+this.$route.params.id, {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
-      this.note=response.data
+      this.note=response.data.note
+      this.note_categories=response.data.note_categories
+      this.categories = response.data.categories
     })
     .catch((e) => {
       this.alertStore.setError(e);
     });
-  },
-  methods:{
+    },
     editNote: async function(){
       await axiosService.put("/notes/"+this.$route.params.id,{
-        note: this.note
+        note: this.note,
+        categories: this.note_categories
       }, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
-        this.note=response.data
+        this.note=response.data.note
+        this.note_categories=response.data.note_categories
+        this.categories=response.data.categories
       })
       .catch((e) => {
         this.alertStore.setError(e);
       });
-    }
+    },
+    addCategory: function(cat){
+        this.categories.splice(this.categories.indexOf(cat),1)
+        this.note_categories.push(cat)
+    },
+    removeCategory: function(cat){
+        this.note_categories.splice(this.note_categories.indexOf(cat),1)
+        this.categories.push(cat)
+    },
   },
 }
 </script>

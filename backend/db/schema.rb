@@ -12,11 +12,16 @@
 
 ActiveRecord::Schema[7.1].define(version: 2023_12_23_155319) do
   create_table "categories", force: :cascade do |t|
-    t.integer "note_id"
     t.string "name", limit: 25, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["note_id"], name: "index_categories_on_note_id"
+  end
+
+  create_table "categories_notes", id: false, force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "note_id"
+    t.index ["category_id"], name: "index_categories_notes_on_category_id"
+    t.index ["note_id"], name: "index_categories_notes_on_note_id"
   end
 
   create_table "notes", force: :cascade do |t|
