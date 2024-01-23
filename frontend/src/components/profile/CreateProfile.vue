@@ -34,21 +34,39 @@ export default {
     },
     methods: {
         createProfile: async function(){
-            await axiosService.post("/user/create",
-                {   
-                    user: {
-                        username: this.data.username,
-                        password: this.data.password,
-                    }
-                })
-            .then(response => {
-                this.data = response.data
-                this.alertStore.setInfo("Bienvenido a Notes app, inicie sesión");
-                this.$router.push("/");
-                })
-                .catch(e => {
-                    this.alertStore.setError(e);
-                })
+            let validationResult = this.validateUser(this.data)
+            if ( validationResult != "true"){
+                this.alertStore.setError(validationResult);
+            }
+            else{
+                await axiosService.post("/user/create",
+                    {   
+                        user: {
+                            username: this.data.username,
+                            password: this.data.password,
+                        }
+                    })
+                    .then(response => {
+                        this.data = response.data
+                        this.alertStore.setInfo("Bienvenido a Notes app, inicie sesión");
+                        this.$router.push("/");
+                    })
+                    .catch(e => {
+                        this.alertStore.setError(e);
+                    })
+                }
+            },
+            validateUser: function(user){
+                var validez = "true";
+                
+                var regexUsername = /^[a-zA-Z]{4,25}$/;
+                var regexPassword = /^[a-zA-Z0-9.,*?¿¡!#$]{5,25}$/;
+                
+                if(!regexUsername.test(user.username)) validez = "Ingrese un username válido.";
+                else if(!regexPassword.test(user.password)) validez = "Ingrese una password válida.";
+                
+                
+                return validez
             }
         }
     }

@@ -3,8 +3,8 @@ class Api::NotesController < ApplicationController
 
   # GET /notes
   def index
-    @notes = Note.where(user_id: @current_user.id)
-    # params: isactive, categories.
+    @notes = Note.where(user_id: @current_user.id) unless params[:search]
+    @notes = Note.includes(:categories).where(user_id: @current_user.id, categories:{id: params[:search][:category]} ) if params[:search]
 
     render json: @notes
   end

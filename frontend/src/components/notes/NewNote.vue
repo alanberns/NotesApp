@@ -75,23 +75,29 @@ export default {
     },
     methods: {
         createNote: async function(){
-            await axiosService.post("/notes",
-                {   
-                    note: this.note,
-                    categories: this.note_categories
-                },
-                {   
-                headers: {
-                    Authorization: `${localStorage.getItem("token")}`,
-                },
-                })
-            .then(() => {
-                this.alertStore.setInfo("Note created");
-                this.$router.push("/");
-                })
-                .catch(e => {
-                    this.alertStore.setError(e);
-                })
+            let validationResult = this.validateNote(this.note)
+            if ( validationResult != "true"){
+                this.alertStore.setError(validationResult);
+            }
+            else{
+                await axiosService.post("/notes",
+                    {   
+                        note: this.note,
+                        categories: this.note_categories
+                    },
+                    {   
+                        headers: {
+                            Authorization: `${localStorage.getItem("token")}`,
+                        },
+                    })
+                    .then(() => {
+                        this.alertStore.setInfo("Note created");
+                        this.$router.push("/");
+                    })
+                    .catch(e => {
+                        this.alertStore.setError(e);
+                    })
+            }
         },
         addCategory: function(cat){
             this.categories.splice(this.categories.indexOf(cat),1)
@@ -101,6 +107,18 @@ export default {
             this.note_categories.splice(this.note_categories.indexOf(cat),1)
             this.categories.push(cat)
         },
+        validateNote: function(note){
+            var validez = "true";
+            
+            var regexTitle = /^[a-zA-Z0-9.,*?¿¡!#$]{3,100}$/;
+            var regexContent = /^[a-zA-Z0-9.,*?¿¡!#$]{0,1000}$/;
+            
+            if(!regexTitle.test(note.title)) validez = "Ingrese un title válido.";
+            else if(!regexContent.test(note.content)) validez = "Ingrese un content válido.";
+            
+            
+            return validez
+        }
     }
 }
 </script>

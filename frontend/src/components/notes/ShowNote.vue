@@ -33,11 +33,11 @@
                 <form>
                   <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Title:</label>
-                    <input type="text" class="form-control" id="recipient-name" v-model="note.title">
+                    <input type="text" class="form-control" id="recipient-name" v-model="editedNote.title">
                   </div>
                   <div class="mb-3">
                     <label for="message-text" class="col-form-label">Content:</label>
-                    <textarea class="form-control" id="message-text" v-model="note.content"></textarea>
+                    <textarea class="form-control" id="message-text" v-model="editedNote.content"></textarea>
                   </div>
                 </form>
                 <div class="mb-3">
@@ -87,6 +87,10 @@ export default {
   data(){
     return{
         note: Object,
+        editedNote: {
+          title: String,
+          content: String,
+        },
         categories: [],
         note_categories: []
     }
@@ -103,31 +107,42 @@ export default {
       })
       .then((response) => {
       this.note=response.data.note
+      this.editedNote.title = this.note.title
+      this.editedNote.content = this.note.content
       this.note_categories=response.data.note_categories
       this.categories = response.data.categories
     })
     .catch((e) => {
       this.alertStore.setError(e);
     });
-    },
+  },
     editNote: async function(){
-      await axiosService.put("/notes/"+this.$route.params.id,{
-        note: this.note,
-        categories: this.note_categories
-      }, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
+      let validationResult = this.validateNote(this.editedNote)
+      if ( validationResult != "true"){
+        this.alertStore.setError(validationResult);
+      }
+      else{
+        await axiosService.put("/notes/"+this.$route.params.id,{
+          note: this.editedNote,
+          categories: this.note_categories
+        }, {
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        })
       .then((response) => {
         this.note=response.data.note
+        this.editedNote.title = this.note.title
+        this.editedNote.content = this.note.content
         this.note_categories=response.data.note_categories
         this.categories=response.data.categories
+        this.alertStore.setInfo("Cambios guardados");
       })
       .catch((e) => {
         this.alertStore.setError(e);
       });
-    },
+    }
+  },
     addCategory: function(cat){
         this.categories.splice(this.categories.indexOf(cat),1)
         this.note_categories.push(cat)
@@ -135,7 +150,18 @@ export default {
     removeCategory: function(cat){
         this.note_categories.splice(this.note_categories.indexOf(cat),1)
         this.categories.push(cat)
-    },
+      },
+    validateNote: function(note){
+        var validez = "true";
+        
+        var regexTitle = /^[a-zA-Z0-9.,*?¿¡!#$]{3,100}$/;
+        var regexContent = /^[a-zA-Z0-9.,*?¿¡!#$]{0,1000}$/;
+        
+        if(!regexTitle.test(note.title)) validez = "Ingrese un title válido.";
+        else if(!regexContent.test(note.content)) validez = "Ingrese un content válido.";
+        
+        return validez
+    }
   },
 }
 </script>

@@ -5,6 +5,7 @@
         <div class="col-8">
           <h5 class="card-title">{{ note.title }}</h5>
           <p class="card-text text-truncate">{{ note.content }}</p>
+          <p class="card-text">Last edited: {{ note.updated_at }}</p>
         </div>
         <div class="col-4 border-start border-warning-subtle border-2">
           <button type="button" class="btn" @click="deleteNote(); $emit('refresh');">
