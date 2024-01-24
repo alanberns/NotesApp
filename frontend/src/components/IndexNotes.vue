@@ -4,9 +4,10 @@
         <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
             <router-link to="/archived"><button type="button" class="btn btn-warning">Archived notes</button></router-link>
         </div>
-        <div class="row d-flex justify-content-center p-3">
+        <div class="row d-flex justify-content-center p-3 m-0">
             <div class="col-6 form-floating">
-                <select id="floatingSelect" class="form-select form-select-sm" aria-label="Default select example" v-model="search.category">
+                <select id="floatingSelect" class="form-select form-select-sm" aria-label="Default select example" v-model="category">
+                    <option selected value="">All categories</option>
                     <option v-for="category in categories" v-bind:key="category.id" :value=category.id>{{category.name}}</option>
                 </select>
                 <label for="floatingSelect">Select a category</label>
@@ -45,9 +46,7 @@ export default {
         return {
             categories: [],
             data: [],
-            search:{
-                category: String
-            }
+            category: String,
         }
     },
     mounted() {
@@ -81,7 +80,7 @@ export default {
         searchNotes: function (){
             axiosService.get("/notes", {
                 params: {
-                    search: this.search
+                    category: this.category,
                 },
                 headers: {
                     Authorization: `${localStorage.getItem("token")}`,

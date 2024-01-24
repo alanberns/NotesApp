@@ -8,7 +8,7 @@
           <p class="card-text">Last edited: {{ getFormattedDate(note.updated_at) }}</p>
         </div>
         <div class="col-4 border-start border-warning-subtle border-2">
-          <button type="button" class="btn" @click="deleteNote(); $emit('refresh');">
+          <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
             </svg>
@@ -34,6 +34,23 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this note?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" @click="deleteNote(); $emit('refresh');" data-bs-dismiss="modal">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import { axiosService } from "../axios";
@@ -41,6 +58,9 @@ import {useAlertStore} from '../stores/alertStore'
 import moment from 'moment';
 export default {  
   name: 'NoteBox',
+  emits :{
+        refresh: null,
+  },
   setup() {
     const alertStore = useAlertStore();
     return { alertStore };

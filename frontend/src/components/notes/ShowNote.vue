@@ -17,7 +17,7 @@
           </div>
           <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
               <router-link to="/"><button type="button" class="btn btn-warning">Back</button></router-link>
-              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editNote">Edit</button>
+              <router-link to="#"><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editNote">Edit</button></router-link>
           </div>        
       </div>
 
@@ -154,8 +154,8 @@ export default {
     validateNote: function(note){
         var validez = "true";
         
-        var regexTitle = /^[a-zA-Z0-9.,*?¿¡!#$]{3,100}$/;
-        var regexContent = /^[a-zA-Z0-9.,*?¿¡!#$]{0,1000}$/;
+        var regexTitle = /^[a-zA-Z0-9.,*?¿¡ !#$]{3,100}$/;
+        var regexContent = /^[a-zA-Z0-9.,*?¿ ¡!#$]{0,1000}$/;
         
         if(!regexTitle.test(note.title)) validez = "Ingrese un title válido.";
         else if(!regexContent.test(note.content)) validez = "Ingrese un content válido.";

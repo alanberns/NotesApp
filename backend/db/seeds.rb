@@ -1,5 +1,6 @@
 Note.delete_all
 User.delete_all
+Category.delete_all
 
 user1 = User.create(username:"testuno",password:"asdfg")
 user2 = User.create(username:"testdos",password:"asdfg")

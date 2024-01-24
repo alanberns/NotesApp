@@ -3,9 +3,12 @@ class Api::NotesController < ApplicationController
 
   # GET /notes
   def index
-    @notes = Note.where(user_id: @current_user.id) unless params[:search]
-    @notes = Note.includes(:categories).where(user_id: @current_user.id, categories:{id: params[:search][:category]} ) if params[:search]
-
+    params[:isActive] ? noteActive = false : noteActive = true
+    if params[:category]  && params[:category] != ""
+      @notes = Note.includes(:categories).where(user_id: @current_user.id, isActive: noteActive, categories:{id: params[:category]} )
+    else
+      @notes = Note.where(user_id: @current_user.id, isActive: noteActive)
+    end
     render json: @notes
   end
 
@@ -38,11 +41,8 @@ class Api::NotesController < ApplicationController
   # PATCH /notes/1/toggle
   def toggle
     @note.toggle(:isActive)
-    if @note.save
-      render json: @note
-    else
-      render json: @note.errors, status: :unprocessable_entity
-    end
+    @note.save
+    render json: @note
   end
 
   # PATCH/PUT /notes/1
