@@ -5,7 +5,7 @@
         <div class="col-8">
           <h5 class="card-title">{{ note.title }}</h5>
           <p class="card-text text-truncate">{{ note.content }}</p>
-          <p class="card-text">Last edited: {{ note.updated_at }}</p>
+          <p class="card-text">Last edited: {{ getFormattedDate(note.updated_at) }}</p>
         </div>
         <div class="col-4 border-start border-warning-subtle border-2">
           <button type="button" class="btn" @click="deleteNote(); $emit('refresh');">
@@ -38,6 +38,7 @@
 <script>
 import { axiosService } from "../axios";
 import {useAlertStore} from '../stores/alertStore'
+import moment from 'moment';
 export default {  
   name: 'NoteBox',
   setup() {
@@ -102,6 +103,9 @@ export default {
         this.alertStore.setError(e);
       });
     },
+    getFormattedDate(date) {
+      return moment(date).format("YYYY-MM-DD HH:mm")
+    }
   },
 };
 </script>
