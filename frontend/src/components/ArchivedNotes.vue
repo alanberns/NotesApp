@@ -1,5 +1,5 @@
 <template>
-    <h3> My notes</h3>
+    <h3> Archived notes</h3>
     <div class="">
         <div class="d-grid gap-2 d-md-block d-md-flex justify-content-md-center p-2">
             <router-link to="/"><button type="button" class="btn btn-warning">My notes</button></router-link>
