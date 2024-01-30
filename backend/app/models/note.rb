@@ -8,7 +8,7 @@ class Note < ApplicationRecord
                     length: { in: 3..100, message: "lenght is 3-100" },
                     presence: true
     
-    validates :content, format: { with: /\A[a-zA-Z0-9.,*? ¿¡!#$]+\z/, message: "permited characters: a-zA-Z0-9.,*?$¿¡!#" },
+    validates :content, format: { with: /\A[a-zA-Z0-9.,*? ¿¡!#$/m]+\Z/, message: "permited characters: a-zA-Z0-9.,*?$¿¡!#" },
                         allow_nil: true
 
     private

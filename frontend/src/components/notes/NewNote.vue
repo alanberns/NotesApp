@@ -111,7 +111,7 @@ export default {
             var validez = "true";
             
             var regexTitle = /^[a-zA-Z0-9.,*?¿¡! #$]{3,100}$/;
-            var regexContent = /^[a-zA-Z0-9.,*?¿¡ !#$]{0,1000}$/;
+            var regexContent = /^[a-zA-Z0-9.,*?¿¡ !#$\n]{0,1000}$/;
             
             if(!regexTitle.test(note.title)) validez = "Ingrese un title válido.";
             else if(!regexContent.test(note.content)) validez = "Ingrese un content válido.";
