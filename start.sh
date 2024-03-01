@@ -1,4 +1,5 @@
 #!/bin/bash
+npm install
 cd frontend
 vue serve &
 cd ../backend

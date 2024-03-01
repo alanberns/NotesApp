@@ -78,9 +78,7 @@ export default {
   },
   methods: {
     async changeState() {
-      await axiosService.patch("/notes/"+this.note.id+"/toggle",{
-        note: this.note
-      },
+      await axiosService.patch("/notes/"+this.note.id+"/toggle",{},
       {   
         headers: {
           Authorization: `${localStorage.getItem("token")}`,
@@ -102,22 +100,6 @@ export default {
       })
       .then(() => {
         this.alertStore.setInfo("Note was deleted");
-      })
-      .catch((e) => {
-        this.alertStore.setError(e);
-      });
-    },
-    editNote: async function(){
-      await axiosService.put("/notes/"+this.modified_note.id,{
-        note: this.modified_note
-      },
-      {   
-          headers: {
-              Authorization: `${localStorage.getItem("token")}`,
-          },
-      })
-      .then(() => {
-        this.alertStore.setInfo("Note was updated");
       })
       .catch((e) => {
         this.alertStore.setError(e);
