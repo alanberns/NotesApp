@@ -65,6 +65,7 @@ Los usuarios pueden crear, editar y eliminar sus notas.
 Los usuarios pueden añadir y quitar categorias a sus notas.
 Los usuarios pueden archivar y activar sus notas.
 Los usuarios pueden filtrar sus notas por una categoría, y por el estado de las notas.
+Las categorías son predefinidas.
 
 
 ### Arquitectura
@@ -167,4 +168,4 @@ Se debe enviar el token de autorización.
 
 
 * GET /categories
-Se solicitan las caegorías disponibles
+Se solicitan las categorías disponibles
